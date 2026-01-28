@@ -1,0 +1,151 @@
+# =============================================================================
+# IPIP-50 Question to OCEAN Dimension Mapping
+# =============================================================================
+# This file maps each of the 50 IPIP questions to their corresponding
+# Big Five (OCEAN) personality dimension.
+#
+# OCEAN Dimensions:
+#   O - Openness to Experience
+#   C - Conscientiousness
+#   E - Extraversion
+#   A - Agreeableness
+#   N - Neuroticism (sometimes called Emotional Stability when reversed)
+#
+# Standard IPIP-50 uses columns named EXT1-EXT10, EST1-EST10, AGR1-AGR10,
+# CSN1-CSN10, OPN1-OPN10. Adjust column names below to match your dataset.
+#
+# Each dimension has 10 items, with some reverse-scored.
+# Reverse scoring: new_value = (max_scale + 1) - original_value
+# For Likert scale 1-5: reversed = 6 - original
+# =============================================================================
+
+# Scale information (for reverse scoring)
+scale:
+  min: 1
+  max: 5
+
+# Dimension mappings
+dimensions:
+  # -------------------------------------------------------------------------
+  # Extraversion (E)
+  # High scorers: outgoing, energetic, talkative
+  # Low scorers: reserved, solitary, quiet
+  # -------------------------------------------------------------------------
+  extraversion:
+    items:
+      - "EXT1"   # I am the life of the party
+      - "EXT2"   # I don't talk a lot (R)
+      - "EXT3"   # I feel comfortable around people
+      - "EXT4"   # I keep in the background (R)
+      - "EXT5"   # I start conversations
+      - "EXT6"   # I have little to say (R)
+      - "EXT7"   # I talk to a lot of different people at parties
+      - "EXT8"   # I don't like to draw attention to myself (R)
+      - "EXT9"   # I don't mind being the center of attention
+      - "EXT10"  # I am quiet around strangers (R)
+    reverse_scored:
+      - "EXT2"
+      - "EXT4"
+      - "EXT6"
+      - "EXT8"
+      - "EXT10"
+
+  # -------------------------------------------------------------------------
+  # Neuroticism (N) / Emotional Stability
+  # High scorers: anxious, moody, easily upset
+  # Low scorers: calm, stable, resilient
+  # Note: Some datasets label this "Emotional Stability" (reversed Neuroticism)
+  # -------------------------------------------------------------------------
+  neuroticism:
+    items:
+      - "EST1"   # I get stressed out easily
+      - "EST2"   # I am relaxed most of the time (R)
+      - "EST3"   # I worry about things
+      - "EST4"   # I seldom feel blue (R)
+      - "EST5"   # I am easily disturbed
+      - "EST6"   # I get upset easily
+      - "EST7"   # I change my mood a lot
+      - "EST8"   # I have frequent mood swings
+      - "EST9"   # I get irritated easily
+      - "EST10"  # I often feel blue
+    reverse_scored:
+      - "EST2"
+      - "EST4"
+
+  # -------------------------------------------------------------------------
+  # Agreeableness (A)
+  # High scorers: cooperative, trusting, helpful
+  # Low scorers: competitive, critical, suspicious
+  # -------------------------------------------------------------------------
+  agreeableness:
+    items:
+      - "AGR1"   # I feel little concern for others (R)
+      - "AGR2"   # I am interested in people
+      - "AGR3"   # I insult people (R)
+      - "AGR4"   # I sympathize with others' feelings
+      - "AGR5"   # I am not interested in other people's problems (R)
+      - "AGR6"   # I have a soft heart
+      - "AGR7"   # I am not really interested in others (R)
+      - "AGR8"   # I take time out for others
+      - "AGR9"   # I feel others' emotions
+      - "AGR10"  # I make people feel at ease
+    reverse_scored:
+      - "AGR1"
+      - "AGR3"
+      - "AGR5"
+      - "AGR7"
+
+  # -------------------------------------------------------------------------
+  # Conscientiousness (C)
+  # High scorers: organized, dependable, disciplined
+  # Low scorers: careless, impulsive, disorganized
+  # -------------------------------------------------------------------------
+  conscientiousness:
+    items:
+      - "CSN1"   # I am always prepared
+      - "CSN2"   # I leave my belongings around (R)
+      - "CSN3"   # I pay attention to details
+      - "CSN4"   # I make a mess of things (R)
+      - "CSN5"   # I get chores done right away
+      - "CSN6"   # I often forget to put things back in their proper place (R)
+      - "CSN7"   # I like order
+      - "CSN8"   # I shirk my duties (R)
+      - "CSN9"   # I follow a schedule
+      - "CSN10"  # I am exacting in my work
+    reverse_scored:
+      - "CSN2"
+      - "CSN4"
+      - "CSN6"
+      - "CSN8"
+
+  # -------------------------------------------------------------------------
+  # Openness to Experience (O)
+  # High scorers: creative, curious, open-minded
+  # Low scorers: practical, conventional, prefers routine
+  # -------------------------------------------------------------------------
+  openness:
+    items:
+      - "OPN1"   # I have a rich vocabulary
+      - "OPN2"   # I have difficulty understanding abstract ideas (R)
+      - "OPN3"   # I have a vivid imagination
+      - "OPN4"   # I am not interested in abstract ideas (R)
+      - "OPN5"   # I have excellent ideas
+      - "OPN6"   # I do not have a good imagination (R)
+      - "OPN7"   # I am quick to understand things
+      - "OPN8"   # I use difficult words
+      - "OPN9"   # I spend time reflecting on things
+      - "OPN10"  # I am full of ideas
+    reverse_scored:
+      - "OPN2"
+      - "OPN4"
+      - "OPN6"
+
+# Alternative column naming schemes (uncomment and modify as needed)
+# Some datasets use different naming conventions:
+#
+# alternate_naming:
+#   extraversion: ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10"]
+#   neuroticism: ["N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"]
+#   agreeableness: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"]
+#   conscientiousness: ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10"]
+#   openness: ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9", "O10"]

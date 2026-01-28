@@ -1,0 +1,190 @@
+# =============================================================================
+# Compatibility Pipeline Configuration - Iteration 1
+# =============================================================================
+# This configuration controls all aspects of the offline training pipeline.
+# All parameters are documented to ensure reproducibility.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Global Settings
+# -----------------------------------------------------------------------------
+global:
+  random_seed: 42
+  output_dir: "artifacts"
+  log_level: "INFO"
+
+# -----------------------------------------------------------------------------
+# Data Paths
+# -----------------------------------------------------------------------------
+data:
+  ipip:
+    # Path to the IPIP Big Five dataset
+    path: "data/raw/ipip/IPIP-FFM-data-8Nov2018/data-final.csv"
+    # Delimiter for the IPIP file (tab-separated)
+    delimiter: "\t"
+    # Path to the OCEAN dimension mapping file
+    mapping_file: "configs/ipip50_mapping.yaml"
+
+  okcupid:
+    # Path to the OkCupid profiles dataset (CSV)
+    path: "data/raw/okcupid/okcupid_profiles.csv"
+    # Delimiter for the OkCupid file (comma-separated)
+    delimiter: ","
+
+# -----------------------------------------------------------------------------
+# Pair Generation Settings
+# -----------------------------------------------------------------------------
+pair_generation:
+  # Maximum number of pairs to generate per dataset
+  max_pairs: 200000
+  # Multiplier for small datasets: min(max_pairs, n_persons * multiplier)
+  small_dataset_multiplier: 50
+  # Train/validation split ratio
+  train_ratio: 0.8
+
+# -----------------------------------------------------------------------------
+# Pseudo-Labeling Settings
+# -----------------------------------------------------------------------------
+labeling:
+  personality:
+    # Weight for OCEAN similarity in pseudo-label
+    weight_ocean: 0.7
+    # Weight for raw question similarity in pseudo-label
+    weight_raw: 0.3
+    # Gaussian noise standard deviation
+    noise_std: 0.08
+
+  interests:
+    # Gaussian noise standard deviation for interests model
+    noise_std: 0.08
+    # Weights for different similarity components (must sum to 1.0)
+    weights:
+      text_similarity: 0.5
+      categorical_similarity: 0.3
+      numeric_similarity: 0.2
+
+# -----------------------------------------------------------------------------
+# Preprocessing Settings
+# -----------------------------------------------------------------------------
+preprocessing:
+  ipip:
+    # How to handle missing values: "drop", "mean", "median"
+    missing_strategy: "mean"
+    # Whether to scale features
+    scale_features: true
+
+  okcupid:
+    # How to handle missing numeric values: "drop", "mean", "median", "-1"
+    missing_numeric_strategy: "median"
+    # How to handle missing categorical values: "drop", "mode", "unknown"
+    missing_categorical_strategy: "unknown"
+    # Text columns to use (essay0-essay9 in standard OkCupid dataset)
+    text_columns:
+      - "essay0"
+      - "essay1"
+      - "essay2"
+      - "essay3"
+      - "essay4"
+      - "essay5"
+      - "essay6"
+      - "essay7"
+      - "essay8"
+      - "essay9"
+    # Categorical columns to encode
+    categorical_columns:
+      - "sex"
+      - "orientation"
+      - "status"
+      - "drinks"
+      - "smokes"
+      - "drugs"
+      - "diet"
+      - "body_type"
+      - "education"
+      - "job"
+      - "religion"
+      - "sign"
+      - "pets"
+      - "offspring"
+    # Numeric columns to use
+    numeric_columns:
+      - "age"
+      - "height"
+      - "income"
+
+# -----------------------------------------------------------------------------
+# Feature Engineering Settings
+# -----------------------------------------------------------------------------
+feature_engineering:
+  # TF-IDF settings for text vectorization
+  tfidf:
+    max_features: 5000
+    ngram_range: [1, 2]
+    min_df: 5
+    stop_words: "english"
+
+  # Pairwise feature types to compute
+  pairwise_features:
+    - "absolute_difference"
+    - "element_wise_product"
+    - "mean"
+    - "cosine_similarity"
+
+# -----------------------------------------------------------------------------
+# Model Settings
+# -----------------------------------------------------------------------------
+modeling:
+  # Model type: "gradient_boosting" or "logistic_regression"
+  model_type: "gradient_boosting"
+
+  gradient_boosting:
+    # HistGradientBoostingRegressor parameters
+    max_iter: 200
+    max_depth: 8
+    learning_rate: 0.1
+    min_samples_leaf: 20
+    l2_regularization: 0.1
+    early_stopping: true
+    validation_fraction: 0.1
+    n_iter_no_change: 10
+
+  logistic_regression:
+    # LogisticRegression parameters (for binarized mode)
+    C: 1.0
+    max_iter: 1000
+    # Threshold for binarizing pseudo-labels
+    binarization_threshold: 0.5
+
+# -----------------------------------------------------------------------------
+# Late Fusion Settings
+# -----------------------------------------------------------------------------
+fusion:
+  # Fusion weight: final = alpha * personality + (1 - alpha) * interests
+  alpha: 0.5
+  # Whether alpha is fixed or confidence-based
+  # Options: "fixed", "confidence_weighted"
+  mode: "fixed"
+  # Confidence weighting parameters (used if mode is "confidence_weighted")
+  confidence:
+    # Minimum weight for either model
+    min_weight: 0.2
+
+# -----------------------------------------------------------------------------
+# Evaluation Settings
+# -----------------------------------------------------------------------------
+evaluation:
+  # Seeds for stability analysis
+  stability_seeds: [11, 22, 33, 44, 55]
+  # Number of top features to compare for Jaccard overlap
+  top_k_features: 20
+  # Quantiles to report in distribution analysis
+  quantiles: [0.1, 0.25, 0.5, 0.75, 0.9]
+
+# -----------------------------------------------------------------------------
+# Artifact Saving Settings
+# -----------------------------------------------------------------------------
+artifacts:
+  # Whether to save intermediate artifacts
+  save_intermediate: true
+  # Whether to compress saved models
+  compress: true
