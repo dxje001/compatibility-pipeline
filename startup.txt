@@ -1,0 +1,2 @@
+cd C:\Users\Dusan\compatibility_pipeline
+.\start.ps1

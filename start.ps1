@@ -29,7 +29,7 @@ if (-not (Test-Path "artifacts\runs\seed_11\models")) {
 # Start the UI
 Write-Host ""
 Write-Host "=== Starting Streamlit UI ===" -ForegroundColor Green
-Write-Host "Open http://localhost:8501 in your browser" -ForegroundColor Green
+Write-Host "Open http://localhost:8503 in your browser" -ForegroundColor Green
 Write-Host "Press Ctrl+C to stop" -ForegroundColor Gray
 Write-Host ""
 
